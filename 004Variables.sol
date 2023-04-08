@@ -5,6 +5,9 @@ contract Variables {
     string public text = "Hello";
     uint public num = 123;
 
+    int8 public max = type(int8).max;
+    int8 public min = type(int8).min;
+
     function doSomething() public view returns (uint) {
         // Local variables are not saved to the blockchain.
         uint i = 456;
