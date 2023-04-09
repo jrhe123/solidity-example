@@ -10,7 +10,8 @@ contract SimpleStorage {
     uint favoriteNumber;
     People[] public peopleArr;
 
-    function store(uint _favoriteNumber) public {
+    // virtual: allow to override
+    function store(uint _favoriteNumber) public virtual {
         favoriteNumber = _favoriteNumber;
     }
 
