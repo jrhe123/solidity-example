@@ -9,6 +9,7 @@ struct People {
 contract SimpleStorage {
     uint favoriteNumber;
     People[] public peopleArr;
+    mapping(string => uint) public nameToAge;
 
     // virtual: allow to override
     function store(uint _favoriteNumber) public virtual {
@@ -21,7 +22,10 @@ contract SimpleStorage {
 
     // calldata: not mutable
     // memory: can mutate during the func
+    // types needs memory: struct/mapping/array
+    // * string is array
     function addPeople(uint _age, string calldata _name) public {
         peopleArr.push(People(_age, _name));
+        nameToAge[_name] = _age;
     }
 }
