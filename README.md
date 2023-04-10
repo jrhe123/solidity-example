@@ -1,9 +1,9 @@
 # solidity-example
 
-#### playground
+#### Playground
 - https://remix.ethereum.org
 
-#### website
+#### Website
 - https://solidity-by-example.org
 
 #### Environment
