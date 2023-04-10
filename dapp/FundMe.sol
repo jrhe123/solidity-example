@@ -2,6 +2,7 @@
 pragma solidity ^0.8.17;
 
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "./027Library.sol";
 
 /**
   1. donate
@@ -10,12 +11,20 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
   4. minimum amount: 100usd
  */
 contract FundMe {
+    // using: use library
+    using LibTest for uint256;
+    //
     address public owner;
     uint minimumUSD = 100;
     AggregatorV3Interface internal priceFeed;
     //
     address[] public funders;
     mapping(address => uint) public addressToETHAmountFounded;
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not contract deployer!");
+        _;
+    }
 
     /**
      * Network: Goerli
@@ -27,6 +36,8 @@ contract FundMe {
         priceFeed = AggregatorV3Interface(
             0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e
         );
+        // use library defined function
+        uint dummy = 123.dummy(20);
     }
 
     function getLatestPrice() public view returns (uint) {
@@ -66,8 +77,7 @@ contract FundMe {
 
     // withdraw the contract's balance
     // https://solidity-by-example.org/sending-ether/
-    function withdraw() public {
-        require(msg.sender == owner, "Not contract deployer!");
+    function withdraw() public onlyOwner {
         // THREE WAY to send money
         // 1. call
         (bool callSuccess, ) = payable(msg.sender).call{
@@ -76,11 +86,11 @@ contract FundMe {
         require(callSuccess, "CALL failed");
 
         // 2. transfer
-        payable(msg.sender).transfer(address(this).balance);
+        // payable(msg.sender).transfer(address(this).balance);
 
         // 3. send
-        bool sendSuccess = payable(msg.sender).send(address(this).balance);
-        require(sendSuccess, "transaction failed");
+        // bool sendSuccess = payable(msg.sender).send(address(this).balance);
+        // require(sendSuccess, "transaction failed");
 
         // reset
         for (uint i = 0; i < funders.length; i++) {
