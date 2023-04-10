@@ -13,6 +13,9 @@ contract FundMe {
     address public owner;
     uint minimumUSD = 100;
     AggregatorV3Interface internal priceFeed;
+    //
+    address[] public funders;
+    mapping(address => uint) public addressToETHAmountFounded;
 
     /**
      * Network: Goerli
@@ -55,9 +58,34 @@ contract FundMe {
         );
         // not unit => means wei
         // 1 ether = 10**18 wei = 10**9 Gwei = 1e18
+
+        // record funder list
+        funders.push(msg.sender);
+        addressToETHAmountFounded[msg.sender] = msg.value;
     }
 
+    // withdraw the contract's balance
+    // https://solidity-by-example.org/sending-ether/
     function withdraw() public {
         require(msg.sender == owner, "Not contract deployer!");
+        // THREE WAY to send money
+        // 1. call
+        (bool callSuccess, ) = payable(msg.sender).call{
+            value: address(this).balance
+        }("");
+        require(callSuccess, "CALL failed");
+
+        // 2. transfer
+        payable(msg.sender).transfer(address(this).balance);
+
+        // 3. send
+        bool sendSuccess = payable(msg.sender).send(address(this).balance);
+        require(sendSuccess, "transaction failed");
+
+        // reset
+        for (uint i = 0; i < funders.length; i++) {
+            addressToETHAmountFounded[funders[i]] = 0;
+        }
+        funders = new address[](0);
     }
 }
