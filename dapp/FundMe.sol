@@ -4,6 +4,8 @@ pragma solidity ^0.8.17;
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "./027Library.sol";
 
+error NotOwner();
+
 /**
   1. donate
   2. withdraw donation
@@ -13,16 +15,21 @@ import "./027Library.sol";
 contract FundMe {
     // using: use library
     using LibTest for uint256;
-    //
-    address public owner;
-    uint minimumUSD = 100;
+    // immutable: reduce gas
+    address public immutable i_owner;
+    // constant: reduce gas
+    uint constant minimumUSD = 100;
     AggregatorV3Interface internal priceFeed;
     //
     address[] public funders;
     mapping(address => uint) public addressToETHAmountFounded;
 
     modifier onlyOwner() {
-        require(msg.sender == owner, "Not contract deployer!");
+        // reduce gas:
+        // require(msg.sender == i_owner, "Not contract deployer!");
+        if (msg.sender != i_owner) {
+            revert NotOwner();
+        }
         _;
     }
 
@@ -32,7 +39,7 @@ contract FundMe {
      * Address: 0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e
      */
     constructor() {
-        owner = msg.sender;
+        i_owner = msg.sender;
         priceFeed = AggregatorV3Interface(
             0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e
         );
@@ -97,5 +104,15 @@ contract FundMe {
             addressToETHAmountFounded[funders[i]] = 0;
         }
         funders = new address[](0);
+    }
+
+    // low level interactions: not using "fund"
+    // to receive ETH through contract's address directly
+    receive() external payable {
+        fund();
+    }
+
+    fallback() external payable {
+        fund();
     }
 }

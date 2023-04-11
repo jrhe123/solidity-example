@@ -17,4 +17,7 @@
 - https://weibo.com/7461881950/MfUrAk6gz
 - https://goerli-faucet.pk910.de/
 
+#### Check gas price
+- https://etherscan.io/gastracker
+
 ![progress](https://user-images.githubusercontent.com/17329299/230814283-0fd1c417-b72f-4dad-985d-20d566251ed7.gif)
