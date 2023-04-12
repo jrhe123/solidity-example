@@ -5,6 +5,8 @@
 
 #### Website
 - https://solidity-by-example.org
+- https://solidity-by-example.org/sending-ether/
+- https://solidity-by-example.org/app/multi-sig-wallet/
 
 #### Environment
 - Remix VM
