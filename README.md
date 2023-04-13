@@ -1,5 +1,7 @@
 # solidity-example
 
+![progress](https://user-images.githubusercontent.com/17329299/230814283-0fd1c417-b72f-4dad-985d-20d566251ed7.gif)
+
 #### Playground
 - https://remix.ethereum.org
 
@@ -22,4 +24,5 @@
 #### Check gas price
 - https://etherscan.io/gastracker
 
-![progress](https://user-images.githubusercontent.com/17329299/230814283-0fd1c417-b72f-4dad-985d-20d566251ed7.gif)
+#### React APP - Web3
+<img width="1372" alt="Screen Shot 2023-04-12 at 9 28 00 PM" src="https://user-images.githubusercontent.com/17329299/231622244-a4355567-cb3f-4738-b96f-dfadf8f29039.png">
